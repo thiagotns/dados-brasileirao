@@ -103,7 +103,7 @@ def get_stats_by_match(match_num, year = 2019):
 
             tmp_str = str(goals_count) + ',\t' + tmp_str
 
-            print(tmp_str)
+            #print(tmp_str)
 
             player.append(t.find('strong').text.strip())
             number.append(t.find('span').text.strip())
@@ -233,4 +233,46 @@ def get_matches_to_download(year = 2019):
     return list(set(matches) - set(downloaded))
 
 
-print(get_downloaded_matches())
+def scrape(year = 2019, max = -1):
+    #Download the matches data 
+    
+    folder_year = DATASET_FOLDER + "/" + str(year)
+
+    if not os.path.exists(folder_year):
+        os.mkdir(folder_year)
+
+    #Controls the request rate
+    start = time()
+    sleep(randint(1, 30))
+    wait = time() - start
+    
+    print('Wait: ' + str(wait) + ' ==> Matches to Download' )
+    matches_to_download = get_matches_to_download()
+    
+    if len(matches_to_download) == 0:
+        print("Nothing to download.")
+    
+    count = 0
+    
+    for j in matches_to_download:
+        
+        #Handle how much matches will be downloaded
+        if max > 0 and count >= max:
+            return
+        
+        count += 1
+        
+        #Controls the request rate
+        start = time()
+        sleep(randint(1, 60))
+        wait = time() - start
+        
+        print('Wait: ' + str(wait) + ' ==> Stats by Match [' + str(j) + ']')
+        match = get_stats_by_match(j)
+        
+        match.to_csv(folder_year + '/match_' + str(j).rjust(2,'0') + '.csv', index=False)
+        
+    print("Download Finished")
+
+
+scrape(year=2019, max=3)

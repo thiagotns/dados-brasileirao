@@ -166,12 +166,12 @@ def get_stats_by_match(match_num, year = 2019):
 
 
     goal_at_home = df_match[df_match['at_home'] == 1].sum()['goal']
-    goal_visitante = df_match[df_match['at_home'] == 0].sum()['goal']
-    draw = int(goal_at_home == goal_visitante)
-    win_at_home = int(goal_at_home > goal_visitante)
-    win_visitante = int(goal_at_home < goal_visitante)
+    goal_away = df_match[df_match['at_home'] == 0].sum()['goal']
+    draw = int(goal_at_home == goal_away)
+    win_at_home = int(goal_at_home > goal_away)
+    win_away = int(goal_at_home < goal_away)
 
-    df_match['win'] = df_match['at_home'].map(lambda x: win_at_home if x ==1 else win_visitante)
+    df_match['win'] = df_match['at_home'].map(lambda x: win_at_home if x ==1 else win_away)
     df_match['draw'] = draw
     
     return df_match

@@ -213,21 +213,24 @@ def get_matches(year = 2019):
     return matches
 
 
-def get_downloaded_matches():
+def get_downloaded_matches(year = 2019):
     # Return the list of match ids already downloaded
 
-    file_list = os.listdir(DATASET_FOLDER)
-    file_list = [int(x[6:8]) for x in file_list if x.find('match') >= 0]
+    try:
+        file_list = os.listdir(DATASET_FOLDER + "/" + str(year))
+        file_list = [int(x[6:8]) for x in file_list if x.find('match') >= 0]
+    except OSError as e:
+        return []
 
     return file_list
 
 
-def get_matches_to_download():
+def get_matches_to_download(year = 2019):
     # Return the list of match ids to download
 
-    matches = get_matches()
-    downloaded = get_downloaded_matches()
+    matches = get_matches(year)
+    downloaded = get_downloaded_matches(year)
     return list(set(matches) - set(downloaded))
 
 
-print(get_matches_to_download())
+print(get_downloaded_matches())

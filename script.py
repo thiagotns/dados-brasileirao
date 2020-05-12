@@ -8,15 +8,14 @@ from random import randint
 
 
 URL = 'https://www.cbf.com.br/futebol-brasileiro/competicoes/campeonato-brasileiro-serie-a/'
-YEAR = '2019'
 DATASET_FOLDER  = 'dataset'
 br = mechanize.Browser()
 br.addheaders = [('User-agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.7 (KHTML, like Gecko) Chrome/16.0.912.63 Safari/535.7')]
 
 
-def get_stats_by_match(match_num):
+def get_stats_by_match(match_num, year = 2019):
     
-    match_url = URL + YEAR + '/' +  str(match_num)
+    match_url = URL + str(year) + '/' +  str(match_num)
 
     br.open(match_url)
     resp = br.response().read()
@@ -177,4 +176,40 @@ def get_stats_by_match(match_num):
     
     return df_match
 
-df = get_stats_by_match(1)
+
+def get_matches(year = 2019):
+    
+    matches = []
+    
+    matches_url = URL + str(year)
+
+    br.open(matches_url)
+    resp = br.response().read()
+    soup = BeautifulSoup(resp, "html.parser")
+    
+    rounds = soup.find('aside', class_="aside-rodadas").find('div').findAll('div', class_="swiper-slide")
+    
+    for r in rounds:
+        
+        lis = r.findAll('li')
+        
+        for li in lis:
+            
+            link = li.find('div').findAll('span', class_="partida-desc")[-1].find('a', class_="btn-success")
+            
+            #Continue if the match does not occurred yet
+            if link is None:
+                continue
+            
+            href = link.get('href')
+            
+            inf = href.rfind('/')
+            sup = href.rfind('?')
+            
+            match_num = int(href[inf+1:sup])
+            
+            matches.append(match_num)
+            
+    return matches
+
+print(get_matches())

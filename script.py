@@ -222,4 +222,12 @@ def get_downloaded_matches():
     return file_list
 
 
-print(get_downloaded_matches())
+def get_matches_to_download():
+    # Return the list of match ids to download
+
+    matches = get_matches()
+    downloaded = get_downloaded_matches()
+    return list(set(matches) - set(downloaded))
+
+
+print(get_matches_to_download())

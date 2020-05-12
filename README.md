@@ -1,2 +1,3 @@
-# Dados do Brasileirão 2019
-Raspagem e análise de dados estatísticos do jogos do campeonato brasileiro de futebol de 2019
+# Data from Brazilian National Soccer League
+
+Script to download the match results of Brazilian National Soccer League, including score, players, substitutes, goals and cards. 

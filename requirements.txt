@@ -1,6 +1,6 @@
 beautifulsoup4==4.9.0
 html5lib==1.0.1
-mechanize==0.4.5
+mechanize==0.4.6
 numpy==1.18.4
 pandas==1.0.3
 python-dateutil==2.8.1
